@@ -1,7 +1,7 @@
 import numpy as np
 from tensorflow.keras.utils import to_categorical
 import cv2 as cv
-def load_all_data(path = "E:\\data\\aslam\\COVID19-XRay-Dataset-master\\COVID19-XRay-Dataset-master\\train\\"):
+def load_all_data(path = "../COVID19-XRay-Dataset-master/train/"):
     import pathlib
     import tensorflow as tf
     data_root_orig = path
@@ -29,7 +29,7 @@ def load_all_data(path = "E:\\data\\aslam\\COVID19-XRay-Dataset-master\\COVID19-
     return img_final_list, all_image_labels
 def load_data():
     x_train, y_train = load_all_data()
-    x_test, y_test = load_all_data("E:\\data\\aslam\\COVID19-XRay-Dataset-master\\COVID19-XRay-Dataset-master\\test\\")
+    x_test, y_test = load_all_data("../COVID19-XRay-Dataset-master/test/")
     return (x_train, y_train), (x_test, y_test)
 
 class BatchGenerator:
