@@ -38,8 +38,9 @@ from sklearn.metrics import confusion_matrix
 # === pred ===
 # y_pred = model.predict_classes(x_test)
 # print(y_pred)
-y_test = [1, 1, 1]
-y_pred = [1, 0, 1]
+labels = ['covid', 'normal', 'pneumonia']
+y_test = list(map(int, "2 0 0 0 1 0 0 0 2 2 2 0 1 0 2 0 2 2 0 2 2 0 0 0 0 0 0 2 0 0 0 0 1 0 0 0 2 0 2 0 2 0 2 2 2 2 0 2 0 0 0 0 0 2 2 0 2 0 0 1 1 0 2 0 0 1 2 0 2 0 0 2 2 2 0 2 0 1 0 2".split(" ")))
+y_pred = list(map(int, "1 0 2 0 1 0 0 1 2 1 1 0 1 0 1 2 1 2 0 2 2 0 0 0 2 2 0 1 1 0 2 0 1 0 0 0 2 2 1 1 2 0 2 2 2 2 0 2 0 0 0 0 0 2 1 0 1 1 1 1 1 2 2 0 1 1 2 2 1 1 0 2 2 2 1 2 0 2 0 1".split(" ")))
 # === 混淆矩阵：真实值与预测值的对比 ===
 # https://scikit-learn.org/stable/auto_examples/model_selection/plot_confusion_matrix.html
 con_mat = confusion_matrix(y_test, y_pred)
@@ -48,10 +49,11 @@ con_mat_norm = con_mat.astype('float') / con_mat.sum(axis=1)[:, np.newaxis]     
 con_mat_norm = np.around(con_mat_norm, decimals=2)
 
 # === plot ===
-plt.figure(figsize=(8, 8))
+plt.figure(figsize=(4, 4))
 sns.heatmap(con_mat_norm, annot=True, cmap='Blues')
-
-plt.ylim(0, 10)
+plt.yticks([0, 1, 2], labels)
+plt.xticks([0, 1, 2], labels)
 plt.xlabel('Predicted labels')
 plt.ylabel('True labels')
-plt.show()
+# plt.show()
+plt.savefig("5_2.jpg")

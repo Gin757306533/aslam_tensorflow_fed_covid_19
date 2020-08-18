@@ -1,6 +1,11 @@
 import tensorflow as tf
 from tqdm import tqdm
+import keras
+import matplotlib.pyplot as plt
+import numpy as np
+import seaborn as sns
 
+from sklearn.metrics import confusion_matrix
 from Client import Clients
 import os
 import numpy as np
@@ -59,8 +64,8 @@ class MyEncoder(json.JSONEncoder):
 
 #### BEGIN TRAINING ####
 global_vars3 = client.get_client_vars()
-for client_number in [5]:
-    for lower_client_number in [2]:
+for client_number in [5, 10, 15]:
+    for lower_client_number in [2, 3, 4, 5]:
         print(client_number, lower_client_number)
         CLIENT_NUMBER = client_number
         LOCAL_CLIENT_NUMBER = lower_client_number
@@ -122,7 +127,23 @@ for client_number in [5]:
             # run test on 1000 instances
             acc, loss = run_global_test(client, global_vars, test_num=80)
 
+            labels = ['covid', 'normal', 'pneumonia']
+            prediction, Y = run_global_test2(client, global_vars, test_num=80)
+            con_mat = confusion_matrix(Y, prediction)
+
+            con_mat_norm = con_mat.astype('float') / con_mat.sum(axis=1)[:, np.newaxis]  # 归一化
+            con_mat_norm = np.around(con_mat_norm, decimals=2)
+
+            # === plot ===
+            plt.figure(figsize=(4, 4))
+            sns.heatmap(con_mat_norm, annot=True, cmap='Blues')
+            plt.yticks([0, 1, 2], labels)
+            plt.xticks([0, 1, 2], labels)
+            plt.xlabel('Predicted labels')
+            plt.ylabel('True labels')
+            # plt.show()
+            plt.savefig("plt_img/%d_%d.jpg"%(client_number, lower_client_number))
+
 
 #### FINAL TEST ####
 # run_global_test(client, global_vars, test_num=80)
-prediction, Y = run_global_test2(client, global_vars, test_num=80)

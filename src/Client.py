@@ -7,7 +7,7 @@ from Model import AlexNet
 from Dataset import Dataset
 
 # The definition of fed model
-FedModel = namedtuple('FedModel', 'X Y DROP_RATE train_op loss_op acc_op logits prediction Y')
+FedModel = namedtuple('FedModel', 'X Y DROP_RATE train_op loss_op acc_op logits pred Y_')
 
 class Clients:
     def __init__(self, input_shape, num_classes, learning_rate, clients_num, local_client_number=1):
@@ -48,7 +48,7 @@ class Clients:
                 self.model.Y: batch_y,
                 self.model.DROP_RATE: 0
             }
-        return self.sess.run([self.model.prediction, self.model.Y],
+        return self.sess.run([self.model.pred, self.model.Y_],
                              feed_dict=feed_dict)
 
     def train_epoch(self, cid,lcid=0, batch_size=32, dropout_rate=0.5):

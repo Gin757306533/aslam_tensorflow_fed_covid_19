@@ -71,7 +71,9 @@ def AlexNet(input_shape, num_classes, learning_rate, graph):
         accuracy = tf.reduce_mean(
             tf.cast(correct_pred, tf.float32))
 
-        return X, Y, DROP_RATE, train_op, loss_op, accuracy, logits, prediction, Y
+        Y_ = tf.argmax(Y, 1)
+
+        return X, Y, DROP_RATE, train_op, loss_op, accuracy, logits, pred, Y_
 
 
 def conv(x, filter_height, filter_width, num_filters,
